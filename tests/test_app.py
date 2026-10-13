@@ -57,6 +57,36 @@ class ApplicationTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         response.close()
 
+    def test_public_navigation_marks_current_page(self):
+        pages = (
+            ("/", 'aria-label="Centro de Estudiantes, inicio" aria-current="page"'),
+            ("/quienes-somos", 'href="/quienes-somos" aria-current="page"'),
+            ("/novedades", 'href="/novedades" aria-current="page"'),
+            ("/calendario", 'href="/calendario" aria-current="page"'),
+            ("/contacto", 'href="/contacto" aria-current="page"'),
+        )
+        for path, current_link in pages:
+            with self.subTest(path=path):
+                response = self.client.get(path)
+                html = response.get_data(as_text=True)
+                self.assertIn(current_link, html)
+                self.assertEqual(html.count('aria-current="page"'), 1)
+                response.close()
+
+    def test_home_has_student_shortcuts_and_clear_actions(self):
+        response = self.client.get("/")
+        html = response.get_data(as_text=True)
+        for link in (
+            'href="/novedades"',
+            'href="/contacto"',
+            'href="#novedades"',
+            'href="#agenda"',
+            'href="#proyectos"',
+        ):
+            with self.subTest(link=link):
+                self.assertIn(link, html)
+        response.close()
+
     def test_post_requests_require_csrf_and_contact_is_saved(self):
         self.assertEqual(
             self.client.post("/contacto", data={"message": "Sin token"}).status_code,

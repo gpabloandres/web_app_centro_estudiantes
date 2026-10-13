@@ -14,15 +14,15 @@
 	<a class="skip-link" href="#contenido">Saltar al contenido</a>
 	<header class="site-header">
 		<div class="header-inner">
-			<a class="brand" href="{{ url_for('public.index') }}" aria-label="Centro de Estudiantes, inicio">
+			<a class="brand" href="{{ url_for('public.index') }}" aria-label="Centro de Estudiantes, inicio"{% if request.endpoint == 'public.index' %} aria-current="page"{% endif %}>
 				<span class="brand-mark" aria-hidden="true">27</span>
 				<span class="brand-copy"><strong>Centro de Estudiantes</strong><small>CTPAM · Lista 27</small></span>
 			</a>
 			<nav class="main-nav" aria-label="Navegación principal">
-				<a href="{{ url_for('public.quienes_somos') }}">Quiénes somos</a>
-				<a href="{{ url_for('public.novedades') }}">Novedades</a>
-				<a href="{{ url_for('public.calendario') }}">Calendario</a>
-				<a href="{{ url_for('public.contacto') }}">Contacto</a>
+				<a href="{{ url_for('public.quienes_somos') }}"{% if request.endpoint == 'public.quienes_somos' %} aria-current="page"{% endif %}>Quiénes somos</a>
+				<a href="{{ url_for('public.novedades') }}"{% if request.endpoint == 'public.novedades' %} aria-current="page"{% endif %}>Novedades</a>
+				<a href="{{ url_for('public.calendario') }}"{% if request.endpoint == 'public.calendario' %} aria-current="page"{% endif %}>Calendario</a>
+				<a href="{{ url_for('public.contacto') }}"{% if request.endpoint == 'public.contacto' %} aria-current="page"{% endif %}>Contacto</a>
 			</nav>
 			{% if g.user %}
 				<a class="header-action" href="{{ url_for('admin.dashboard') }}">Administración</a>
